@@ -7,12 +7,12 @@ import se.kth.iv1350.POS.model.Receipt;
 import se.kth.iv1350.POS.model.Sale;
 
 public class SaleDto {
-    private Receipt _receipt;
-    private ArrayList<Item> _itemList;
-    private String _formattedDate;
-    private double _vatAmountInCurrency;
-    private double _currentTotal;
-    private double _moneyPaid;
+    private final Receipt _receipt;
+    private final ArrayList<Item> _itemList;
+    private final String _formattedDate;
+    private final double _vatAmountInCurrency;
+    private final double _currentTotal;
+    private final double _moneyPaid;
 
     /**
      * Creates a new instance of SaleDto
@@ -77,12 +77,4 @@ public class SaleDto {
         return _vatAmountInCurrency;
     }
 
-    /**
-     * Sets the amount paid by the customer
-     *
-     * @param moneyPaid the amount paid
-     */
-    public void SetMoneyPaid(double moneyPaid) {
-        _moneyPaid = moneyPaid;
-    }
 }

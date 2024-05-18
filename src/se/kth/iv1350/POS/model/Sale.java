@@ -15,7 +15,10 @@ public class Sale {
     private final ArrayList<Item> _itemList = new ArrayList<>();
     private double _vatAmountInCurrency = 0;
     private double _currentTotal = 0;
+    private double _revenue = 0;
     private double _moneyPaid = 0;
+
+    private ArrayList<RegisterRevenueObserver> _registerRevenueObservers = new ArrayList<>();
 
     /**
      * creates a new instance
@@ -40,7 +43,6 @@ public class Sale {
         }
 
         if (DoesItemExist(item)) {
-            // add quantity
             for (int i = 0; i < _itemList.size(); i++) {
                 Item value = _itemList.get(i);
                 if (value.GetItemId().equals(item.GetItemId())) {
@@ -67,7 +69,7 @@ public class Sale {
 
     /**
      * @return the list of items formatted to string
-     */ 
+     */
     public String GetAllItemsFormatted() {
         StringBuilder sb = new StringBuilder();
         for (Item item : _itemList) {
@@ -77,10 +79,10 @@ public class Sale {
     }
 
     /**
-     * @return the list of items
+     * @return Return a copy of the list of items and not the actual list!!!
      */
     public ArrayList<Item> GetListOfCurrentItemsInSale() {
-        return _itemList;
+        return new ArrayList<>(_itemList);
     }
 
     /**
@@ -105,15 +107,6 @@ public class Sale {
     }
 
     /**
-     * @return the running total formatted
-     */
-    public String GetRunningTotalFormatted() {
-        int wholePart = (int) _currentTotal;
-        int decimalPart = (int) ((_currentTotal - wholePart) * 100);
-        return String.format("%02d:%02d", wholePart, decimalPart);
-    }
-
-    /**
      * @return the amount customer pays
      */
     public double GetMoneyPaid() {
@@ -126,7 +119,8 @@ public class Sale {
      * @param moneyPaid the amount paid
      */
     public void SetMoneyPaid(double moneyPaid) {
-        this._moneyPaid = moneyPaid;
+        NotifyObservers();
+        _moneyPaid = moneyPaid;
     }
 
     /**
@@ -140,16 +134,17 @@ public class Sale {
      * @return the change
      */
     public double GetChange() {
-        return _moneyPaid - (_currentTotal + _vatAmountInCurrency);
+        _revenue = _moneyPaid - (_currentTotal + _vatAmountInCurrency);
+        NotifyObservers();
+        return _revenue;
     }
 
     /**
      * @return the item formatted
      */
     private String ConsoleOutput(ItemDto item) {
-        return "Item name: " + item.GetDescription() + "\nItem cost: " + item.GetFormattedPrice() + " SEK\n"
-                + "Running total: " + GetRunningTotalFormatted() + " SEK\n";
-
+        return "Item name: " + item.GetDescription() + "\nItem cost: " + item.GetCost() + " SEK\n"
+                + "Running total: " + GetCurrentTotal() + " SEK\n";
     }
 
     /**
@@ -167,4 +162,18 @@ public class Sale {
         return false;
     }
 
+    /**
+     * Adds an observer to the list of observers
+     *
+     * @param observer the observer to be added
+     */
+    public void AddRegisterRevenueObserver(RegisterRevenueObserver observer) {
+        _registerRevenueObservers.add(observer);
+    }
+
+    private void NotifyObservers() {
+        for (int i = 0; i < _registerRevenueObservers.size(); i++) {
+            _registerRevenueObservers.get(i).UpdateTotalRevenue(_revenue);
+        }
+    }
 }

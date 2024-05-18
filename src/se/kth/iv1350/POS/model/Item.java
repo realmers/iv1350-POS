@@ -1,7 +1,5 @@
 package se.kth.iv1350.POS.model;
 
-import se.kth.iv1350.POS.model.DTO.ItemDto;
-
 
 public class Item {
 
@@ -17,7 +15,7 @@ public class Item {
      * @param itemDto  the item to be converted to an Item
      * @param quantity the quantity of the item
      */
-    public Item(ItemDto itemDto, int quantity) {
+    public Item(se.kth.iv1350.POS.model.DTO.ItemDto itemDto, int quantity) {
         _itemId = itemDto.GetItemId();
         _cost = itemDto.GetCost();
         _description = itemDto.GetDescription();

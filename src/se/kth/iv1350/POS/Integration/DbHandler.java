@@ -38,9 +38,10 @@ public class DbHandler {
      *
      * @param saleDto A Dto of class Sale
      */
-    public void FakeLogSale(SaleDto saleDto) {
+    public double FakeLogSale(SaleDto saleDto) {
         _externalAccountingSystem.FakeLogSale(saleDto);
-        _register.UpdateRegister(saleDto);
+        double temp = _register.UpdateRegister(saleDto);
+        return temp;
 
     }
 
@@ -49,7 +50,7 @@ public class DbHandler {
      *
      * @param saleDTO A Dto of class Sale
      */
-    public void PrintTheReceipt(SaleDto saleDTO) {
-        _printer.PrintOut(saleDTO);
+    public String PrintTheReceipt(SaleDto saleDTO) {
+        return _printer.PrintOut(saleDTO);
     }
 }

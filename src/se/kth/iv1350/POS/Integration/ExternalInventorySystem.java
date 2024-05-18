@@ -2,6 +2,7 @@ package se.kth.iv1350.POS.Integration;
 
 import se.kth.iv1350.POS.model.DTO.ItemDto;
 
+
 public class ExternalInventorySystem {
 
     private ItemDto[] _inventory = new ItemDto[5];
@@ -13,7 +14,9 @@ public class ExternalInventorySystem {
         _inventory[4] = new ItemDto("5", 10, "Arla milk", 0.25F, 0);
     }
 
-    // Constructor
+    /**
+     * Constructor for the ExternalInventorySystem class
+     */
     public ExternalInventorySystem() {
         PopulateInventory();
     }

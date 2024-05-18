@@ -1,6 +1,7 @@
 package se.kth.iv1350.POS.controller;
 
 import se.kth.iv1350.POS.Integration.*;
+import se.kth.iv1350.POS.model.RegisterRevenueObserver;
 import se.kth.iv1350.POS.model.Sale;
 import se.kth.iv1350.POS.model.DTO.*;
 
@@ -13,7 +14,7 @@ public class Controller {
     private final DbHandler _dbHandler;
 
     /**
-     *
+     * 
      * this method starts a new sale
      */
     public void InitSale() {
@@ -27,9 +28,13 @@ public class Controller {
      * @return the item description
      * @throws InvalidIdException if the identifier is invalid
      */
-    public String RegisterItemByIdAndQuantity(String itemId, int quantity) throws InvalidIdException {
+    public ItemDto RegisterItemByIdAndQuantity(String itemId, int quantity) throws InvalidIdException, DatabaseFailedException {
         if (itemId == null || itemId.isEmpty()) {
             throw new InvalidIdException("Item ID cannot be null or empty.");
+        }
+
+        if(itemId == "1350"){
+            throw new DatabaseFailedException("Database connection failed", new Throwable("Database connection failed"));
         }
 
         ItemDto item = _dbHandler.GetItemById(itemId);
@@ -37,8 +42,9 @@ public class Controller {
         if (item == null) {
             throw new InvalidIdException("No item found with the provided ID.");
         }
+        _sale.RegisterSoldItem(item, quantity);
 
-        return _sale.RegisterSoldItem(item, quantity);
+        return item;
     }
 
     /**
@@ -49,6 +55,10 @@ public class Controller {
         return _sale.GetTotalPrice();
     }
 
+    /**
+     * this method gets the total price of the sale in a specific currency
+     * @return the total price of the sale in a specific currency
+     */
     public double GetVatAmountInCurrency() {
         return _sale.GetVatAmountInCurrency();
     }
@@ -57,11 +67,29 @@ public class Controller {
      * this method concludes the sale
      * @param paidAmount the amount paid by the customer
      */
-    public void Conclude(double paidAmount) {
+    public double concludeSaleAndReturnTotal(double paidAmount) {
         _sale.SetMoneyPaid(paidAmount);
         SaleDto saleDto = new SaleDto(_sale);
-        _dbHandler.FakeLogSale(saleDto);
-        _dbHandler.PrintTheReceipt(saleDto);
+        double currentTotal = _dbHandler.FakeLogSale(saleDto);
+        return currentTotal;
+    }
+
+    /**
+     * this method gets the receipt from the database handler
+     * @return the receipt
+     */
+    public String GetReceiptFromDbHandler(){
+        SaleDto saleDto = new SaleDto(_sale);
+        
+        return _dbHandler.PrintTheReceipt(saleDto);
+    }
+
+    /**
+     * this method adds a register revenue observer
+     * @param observer the observer to be added
+     */
+    public void AddRegisterRevenueObserver(RegisterRevenueObserver observer) {
+        _sale.AddRegisterRevenueObserver(observer);
     }
 
     /**

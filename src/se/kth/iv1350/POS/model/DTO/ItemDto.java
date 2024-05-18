@@ -40,15 +40,6 @@ public class ItemDto {
     }
 
     /**
-     * @return the specific price of the product formatted as a string
-     */
-    public String GetFormattedPrice() {
-        int wholePart = (int) _cost;
-        int decimalPart = (int) ((_cost - wholePart) * 100);
-        return String.format("%02d:%02d", wholePart, decimalPart);
-    }
-
-    /**
      * @return the itemDescription
      */
     public String GetDescription() {

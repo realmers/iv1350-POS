@@ -1,5 +1,6 @@
 package se.kth.iv1350.POS.model;
 
+
 /**
  * Represents a receipt for sale.
  */
