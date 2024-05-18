@@ -119,7 +119,6 @@ public class Sale {
      * @param moneyPaid the amount paid
      */
     public void SetMoneyPaid(double moneyPaid) {
-        NotifyObservers();
         _moneyPaid = moneyPaid;
     }
 
