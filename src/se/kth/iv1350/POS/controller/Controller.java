@@ -4,7 +4,6 @@ import se.kth.iv1350.POS.Integration.*;
 import se.kth.iv1350.POS.model.RegisterRevenueObserver;
 import se.kth.iv1350.POS.model.Sale;
 import se.kth.iv1350.POS.model.DTO.*;
-
 /**
  * This is the application's only controller. All calls to the model pass through here.
  */
@@ -27,6 +26,7 @@ public class Controller {
      * @param quantity the quantity of the item
      * @return the item description
      * @throws InvalidIdException if the identifier is invalid
+     * @throws DatabaseFailedException if the database connection fails
      */
     public ItemDto RegisterItemByIdAndQuantity(String itemId, int quantity) throws InvalidIdException, DatabaseFailedException {
         if (itemId == null || itemId.isEmpty()) {

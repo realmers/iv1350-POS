@@ -75,6 +75,10 @@ public class View {
             double currentTotal = _controller.concludeSaleAndReturnTotal(6000);
             System.out.println("Current total in register: " + currentTotal + " SEK\n");
             System.out.println(_controller.GetReceiptFromDbHandler());
+            /*TEST TO SEE THAT TOTALREVENUEVIEW OBSERVES MULTIPLE SALES */
+            // double currentTotal2 = _controller.concludeSaleAndReturnTotal(6000);
+            // System.out.println("Current total in register: " + currentTotal2 + " SEK\n");
+            // System.out.println(_controller.GetReceiptFromDbHandler());
 
         } catch (IllegalStateException exception) {
             _errorMsgHandler.PrintError("Sale have not started yet");

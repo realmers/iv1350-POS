@@ -1,5 +1,6 @@
 package se.kth.iv1350.POS.Integration;
 
+import se.kth.iv1350.POS.controller.DatabaseFailedException;
 import se.kth.iv1350.POS.model.DTO.ItemDto;
 
 
@@ -25,17 +26,19 @@ public class ExternalInventorySystem {
      * This method is used to retrieve an item from the inventory based on its
      * identifier.
      *
-     * @param itemId A String that represents the unique identifier of the
-     *               item.
+     * @param itemId A String that represents the unique identifier of the item.
      * @return ItemDTO An object that represents the item data.
-     * @throws InvalidIdException If the item identifier does not exist in
-     *                                    the inventory.
-     * @throws ConnectivityException      If the system could not reach the
-     *                                    database.
+     * @throws InvalidIdException If the item identifier does not exist in the inventory.
+     * @throws DatabaseFailedException If the system could not reach the database.
      */
-    public ItemDto GetItemById(String itemId) throws InvalidIdException {
+    public ItemDto GetItemById(String itemId) throws InvalidIdException, DatabaseFailedException {
         if (itemId == null || itemId.equals("")) {
             throw new InvalidIdException("Invalid item identifier");
+        }
+
+        // Simulate database connectivity issue
+        if (Math.random() < 0.001) { // 0.1% chance to simulate a database failure
+            throw new DatabaseFailedException("Database connectivity issue occurred while retrieving item.", new Throwable("Database connectivity issue occurred while retrieving item."));
         }
 
         for (int i = 0; i < _inventory.length; i++) {
@@ -52,8 +55,13 @@ public class ExternalInventorySystem {
      * objects.
      *
      * @return ItemDto[] An array that represents the entire inventory.
+     * @throws DatabaseFailedException If the system could not reach the database.
      */
-    public ItemDto[] GetInventoryArray() {
+    public ItemDto[] GetInventoryArray() throws DatabaseFailedException {
+        // Simulate database connectivity issue
+        if (Math.random() < 0.001) { // 0.1% chance to simulate a database failure
+            throw new DatabaseFailedException("Database connectivity issue occurred while retrieving inventory.", new Throwable("Database connectivity issue occurred while retrieving inventory."));
+        }
         return _inventory;
     }
 }

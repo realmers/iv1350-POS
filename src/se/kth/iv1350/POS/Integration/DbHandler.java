@@ -1,5 +1,6 @@
 package se.kth.iv1350.POS.Integration;
 
+import se.kth.iv1350.POS.controller.DatabaseFailedException;
 import se.kth.iv1350.POS.model.DTO.ItemDto;
 import se.kth.iv1350.POS.model.DTO.SaleDto;
 
@@ -28,8 +29,9 @@ public class DbHandler {
      * @return ItemDTO An object that represents the item data.
      * @throws InvalidIdException If the item identifier does not exist in
      *                            the inventory.
+     * @throws DatabaseFailedException 
      */
-    public ItemDto GetItemById(String itemId) throws InvalidIdException {
+    public ItemDto GetItemById(String itemId) throws InvalidIdException, DatabaseFailedException {
         return _externalInventorySystem.GetItemById(itemId);
     }
 
